@@ -1,17 +1,11 @@
 <template>
   <div class="child" v-for="item in newItems" :key="item.id">
     <div class="item-left" v-if="item.flag">
-      <button
-        class="button"
-        @click.prevent="sideToggle(item.id)"
-      >+</button>
+      <button class="button" @click.prevent="sideToggle(item.id)">+</button>
       {{ item.name }} - {{ item.flag ? "Available" : "Selected" }}
     </div>
     <div class="item-right" v-if="!item.flag">
-      <button
-        class="button btn"
-        @click.prevent="sideToggle(item.id)"
-      >-</button>
+      <button class="button btn" @click.prevent="sideToggle(item.id)">-</button>
       {{ item.name }} - {{ item.flag ? "Available" : "Selected" }}
     </div>
   </div>

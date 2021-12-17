@@ -1,20 +1,26 @@
 <template>
-<div class="main">
-  <h3>List of Items From Parent</h3>
-  <ul>
+  <div class="main">
+    <h3>List of Items From Parent</h3>
+    <ul>
       <li v-for="item in items" :key="item.id">
-        {{ item.id }}# {{ item.name }} - [{{item.flag ? 'Avilable' : 'Selected'}}]
+        {{ item.id }}# {{ item.name }} - [{{
+          item.flag ? "Avilable" : "Selected"
+        }}]
       </li>
     </ul>
-</div>
-<h3>Items From Child</h3>
-<hr>
-<div class="head">
-  <div class="left">Available Item</div>
-  <div class="right">Selected Item</div>
-</div>
+  </div>
+  <h3>Items From Child</h3>
+  <hr />
+  <div class="head">
+    <div class="left">Available Item</div>
+    <div class="right">Selected Item</div>
+  </div>
   <div class="grid-container">
-    <Child :availableItems="availableItems" :selectedItems="selectedItems" @updateitems="updateitems" />
+    <Child
+      :availableItems="availableItems"
+      :selectedItems="selectedItems"
+      @updateitems="updateitems"
+    />
   </div>
 </template>
 <script>
@@ -23,7 +29,7 @@ import Child from "./components/ChildItem.vue";
 export default {
   name: "App",
   components: {
-    Child
+    Child,
   },
   setup() {
     var items = ref([
@@ -38,16 +44,15 @@ export default {
     var availableItems = ref();
     var selectedItems = ref();
 
-    //items.value = [...availableItems.value, ...selectedItems.value];
     const combineArray = () => {
-      availableItems.value = items.value.filter(m => m.flag );
-      selectedItems.value = items.value.filter(m => !m.flag );
+      availableItems.value = items.value.filter((m) => m.flag);
+      selectedItems.value = items.value.filter((m) => !m.flag);
     };
 
     combineArray();
     const updateitems = (childItems) => {
       combineArray();
-      console.log(childItems,'Parent Items Updated:', items.value);
+      console.log(childItems, "Parent Items Updated:", items.value);
     };
 
     return {
@@ -61,9 +66,9 @@ export default {
 </script>
 <style>
 li {
-    list-style: none;
-    border-bottom: 1px solid #4caf50;
-    padding: 2px 0;
+  list-style: none;
+  border-bottom: 1px solid #4caf50;
+  padding: 2px 0;
 }
 .head {
   display: grid;
