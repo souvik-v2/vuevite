@@ -12,13 +12,14 @@
 </template>
 <script>
 import { ref } from "vue";
+import _ from 'lodash';
 export default {
   name: "Child",
   props: ["availableItems", "selectedItems"],
   emits: ["updateitems"],
   setup(props, { emit }) {
-    var availableItems = ref([...props.availableItems]);
-    var selectedItems = ref([...props.selectedItems]);
+    var availableItems = ref(_.clone(props.availableItems));
+    var selectedItems = ref(_.clone(props.selectedItems));
     var newItems = ref();
     //console.log("items", newItems.value);
     newItems.value = [...availableItems.value, ...selectedItems.value];
