@@ -29,6 +29,7 @@
 </template>
 <script>
 import { ref } from "vue";
+import _ from 'lodash';
 export default {
   name: "Item",
   props: {
@@ -38,7 +39,7 @@ export default {
   },
   emits: ["updateitems"],
   setup(props, { emit }) {
-    var newItems = ref(props.items);
+    var newItems = ref(_.clone(props.items));
     console.log("items", newItems.value);
 
     const availableItem = ref([]);
