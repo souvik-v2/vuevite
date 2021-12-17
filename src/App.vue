@@ -14,13 +14,12 @@
   <div class="right">Selected Item</div>
 </div>
   <div class="grid-container">
-    <div v-for="item in items" :key="item.id" class="dynamic">
-      <Child :items="item" @updateitems="updateitems" />
-    </div>
+    <Child :items="availableItems" @updateitems="updateitems" />
+    <Child :items="selectedItems" @updateitems="updateitems" />
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Child from "./components/ChildItem.vue";
 export default {
   name: "App",
@@ -30,22 +29,38 @@ export default {
   setup() {
     var items = ref([
       { id: 1, name: "Item1", flag: true },
-      { id: 2, name: "Item2", flag: false },
+      { id: 2, name: "Item2", flag: true },
       { id: 3, name: "Item3", flag: true },
       { id: 4, name: "Item4", flag: false },
-      { id: 5, name: "Item5", flag: true },
+      { id: 5, name: "Item5", flag: false },
       { id: 6, name: "Item6", flag: false },
       { id: 7, name: "Item7", flag: false },
     ]);
+    var availableItems = ref();
+    var selectedItems = ref();
 
-    const updateitems = (childItems) => {
-      let index = items.value.find((item) => item.id === childItems);
-      index.flag = !index.flag;
-      console.log('Parent Items Updated:', items.value);
+    //items.value = [...availableItems.value, ...selectedItems.value];
+    const combineArray = () => {
+      availableItems.value = items.value.filter(m => m.flag );
+      selectedItems.value = items.value.filter(m => !m.flag );
     };
+
+    combineArray();
+    const updateitems = (childItems) => {
+      //let index = items.value.findIndex((item) => item.id === childItems);
+      //index.flag = !index.flag;
+      combineArray();
+      console.log(childItems,'Parent Items Updated:', items.value);
+    };
+    watch(() => [...items.value], (currentValue, oldValue) => {
+      combineArray();
+    },
+    {deep: true});
 
     return {
       items,
+      availableItems,
+      selectedItems,
       updateitems,
     };
   },
