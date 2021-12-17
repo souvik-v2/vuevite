@@ -7,17 +7,25 @@
       </li>
     </ul>
 </div>
+<h3>Items From Child</h3>
+<hr>
+<div class="head">
+  <div class="left">Available Item</div>
+  <div class="right">Selected Item</div>
+</div>
   <div class="grid-container">
-    <Item :items="items" @updateitems="updateitems" />
+    <div v-for="item in items" :key="item.id" class="dynamic">
+      <Child :items="item" @updateitems="updateitems" />
+    </div>
   </div>
 </template>
 <script>
 import { ref } from "vue";
-import Item from "./components/Item.vue";
+import Child from "./components/ChildItem.vue";
 export default {
   name: "App",
   components: {
-    Item,
+    Child
   },
   setup() {
     var items = ref([
@@ -31,8 +39,9 @@ export default {
     ]);
 
     const updateitems = (childItems) => {
-      let index = items.value.findIndex((item) => item.id === childItems);
-      console.log('Items Now:', items.value);
+      let index = items.value.find((item) => item.id === childItems);
+      index.flag = !index.flag;
+      console.log('Parent Items Updated:', items.value);
     };
 
     return {
@@ -60,7 +69,6 @@ h3 {
 }
 .grid-container {
   display: block;
-  background-color: #2196f3;
 }
 .item-right {
   float: right;
@@ -70,6 +78,7 @@ h3 {
   text-align: center;
   width: 50%;
   margin-bottom: 10px;
+  clear: right;
 }
 .item-left {
   float: left;
@@ -79,6 +88,7 @@ h3 {
   text-align: center;
   width: 47%;
   margin-bottom: 10px;
+  clear: left;
 }
 .button {
   background-color: #4caf50;
