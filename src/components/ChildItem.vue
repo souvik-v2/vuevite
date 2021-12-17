@@ -20,16 +20,18 @@
 import { ref } from "vue";
 export default {
   name: "Child",
-  props: ["items"],
+  props: ["availableItems", "selectedItems"],
   emits: ["updateitems"],
   setup(props, { emit }) {
-    var newItems = ref([...props.items]);
+    var availableItems = ref([...props.availableItems]);
+    var selectedItems = ref([...props.selectedItems]);
+    var newItems = ref();
     //console.log("items", newItems.value);
+    newItems.value = [...availableItems.value, ...selectedItems.value];
 
     const sideToggle = (id) => {
       let index = newItems.value.findIndex((i) => i.id === id);
       newItems.value[index].flag = !newItems.value[index].flag;
-      //if (newItems.value.id === id) newItems.value.flag = !newItems.value.flag;
       emit("updateitems", id);
     };
 

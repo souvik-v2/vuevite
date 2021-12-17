@@ -14,8 +14,7 @@
   <div class="right">Selected Item</div>
 </div>
   <div class="grid-container">
-    <Child :items="availableItems" @updateitems="updateitems" />
-    <Child :items="selectedItems" @updateitems="updateitems" />
+    <Child :availableItems="availableItems" :selectedItems="selectedItems" @updateitems="updateitems" />
   </div>
 </template>
 <script>
@@ -47,15 +46,9 @@ export default {
 
     combineArray();
     const updateitems = (childItems) => {
-      //let index = items.value.findIndex((item) => item.id === childItems);
-      //index.flag = !index.flag;
       combineArray();
       console.log(childItems,'Parent Items Updated:', items.value);
     };
-    watch(() => [...items.value], (currentValue, oldValue) => {
-      combineArray();
-    },
-    {deep: true});
 
     return {
       items,
