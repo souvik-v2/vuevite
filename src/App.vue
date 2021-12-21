@@ -1,30 +1,16 @@
 <template>
-  <div class="main">
-    <h3>List of Items From Parent</h3>
-    <ul>
-      <li v-for="item in items" :key="item.id">
-        {{ item.id }}# {{ item.name }} - [{{
-          item.flag ? "Avilable" : "Selected"
-        }}]
-      </li>
-    </ul>
-  </div>
-  <h3>Items From Child</h3>
-  <hr />
-  <div class="head">
-    <div class="left">Available Item</div>
-    <div class="right">Selected Item</div>
-  </div>
   <div class="grid-container">
+    <h3>Item List</h3>
+    <hr>
     <Child
-      :availableItems="availableItems"
-      :selectedItems="selectedItems"
-      @updateitems="updateitems"
+      availableItemsLabel="Available"
+      selectedItemsLabel="Selected"
+      @updateAvailableItems="updateAvailableItems"
+      @updateSelectedItems="updateSelectedItems"
     />
   </div>
 </template>
 <script>
-import { ref, watch } from "vue";
 import Child from "./components/ChildItem.vue";
 export default {
   name: "App",
@@ -32,39 +18,28 @@ export default {
     Child,
   },
   setup() {
-    var items = ref([
-      { id: 1, name: "Item1", flag: true },
-      { id: 2, name: "Item2", flag: true },
-      { id: 3, name: "Item3", flag: true },
-      { id: 4, name: "Item4", flag: false },
-      { id: 5, name: "Item5", flag: false },
-      { id: 6, name: "Item6", flag: false },
-      { id: 7, name: "Item7", flag: false },
-    ]);
-    var availableItems = ref();
-    var selectedItems = ref();
-
-    const combineArray = () => {
-      availableItems.value = items.value.filter((m) => m.flag);
-      selectedItems.value = items.value.filter((m) => !m.flag);
+    const updateAvailableItems = (childItems) => {
+      console.log(childItems, "Parent AvailableItems:", childItems);
     };
-
-    combineArray();
-    const updateitems = (childItems) => {
-      combineArray();
-      console.log(childItems, "Parent Items Updated:", items.value);
+    const updateSelectedItems = (childItems) => {
+      console.log(childItems, "Parent SelectedItems:", childItems);
     };
 
     return {
-      items,
-      availableItems,
-      selectedItems,
-      updateitems,
+      updateAvailableItems,
+      updateSelectedItems,
     };
   },
 };
 </script>
 <style>
+.cns {
+  width: 40%;
+  height: 50px;
+  margin: 0 25%;
+  float: left;
+  clear: both;
+}
 li {
   list-style: none;
   border-bottom: 1px solid #4caf50;

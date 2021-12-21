@@ -1,38 +1,79 @@
 <template>
-  <div class="child" v-for="item in newItems" :key="item.id">
-    <div class="item-left" v-if="item.flag">
-      <button class="button" @click.prevent="sideToggle(item.id)">+</button>
-      {{ item.name }} - {{ item.flag ? "Available" : "Selected" }}
-    </div>
-    <div class="item-right" v-if="!item.flag">
-      <button class="button btn" @click.prevent="sideToggle(item.id)">-</button>
-      {{ item.name }} - {{ item.flag ? "Available" : "Selected" }}
-    </div>
+  <div class="head">
+    <div class="left">{{ availableItemsLabel }}</div>
+    <div class="right">{{ selectedItemsLabel }}</div>
   </div>
+  <div class="item-left">
+    <ul>
+      <li v-for="item in availableItems" :key="item.id">
+        <button
+          class="button"
+          @click.prevent="sideToggle(item.id, 'available')"
+        >
+          +
+        </button>
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+  <div class="item-right">
+    <ul>
+      <li v-for="item in selectedItems" :key="item.id">
+        <button
+          class="button btn"
+          @click.prevent="sideToggle(item.id, 'selected')"
+        >
+          -
+        </button>
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+  <button class="cns" @click="updateParent">Console in Parent</button>
 </template>
 <script>
 import { ref } from "vue";
-import _ from 'lodash';
 export default {
   name: "Child",
-  props: ["availableItems", "selectedItems"],
-  emits: ["updateitems"],
+  props: ["availableItemsLabel", "selectedItemsLabel"],
+  emits: ["updateAvailableItems", "updateSelectedItems"],
   setup(props, { emit }) {
-    var availableItems = ref(_.clone(props.availableItems));
-    var selectedItems = ref(_.clone(props.selectedItems));
-    var newItems = ref();
-    //console.log("items", newItems.value);
-    newItems.value = [...availableItems.value, ...selectedItems.value];
+    var availableItemsLabel = ref(props.availableItemsLabel);
+    var selectedItemsLabel = ref(props.selectedItemsLabel);
+    var availableItems = ref([
+      { id: 1, name: "Item1" },
+      { id: 2, name: "Item2" },
+      { id: 3, name: "Item3" },
+    ]);
+    var selectedItems = ref([
+      { id: 4, name: "Item4" },
+      { id: 5, name: "Item5" },
+      { id: 6, name: "Item6" },
+      { id: 7, name: "Item7" },
+    ]);
 
-    const sideToggle = (id) => {
-      let index = newItems.value.findIndex((i) => i.id === id);
-      newItems.value[index].flag = !newItems.value[index].flag;
-      emit("updateitems", id);
+    const sideToggle = (id, name) => {
+      if (name === "available") {
+        selectedItems.value.push(availableItems.value.find((i) => i.id === id));
+        availableItems.value = availableItems.value.filter((i) => i.id !== id);
+      } else {
+        availableItems.value.push(selectedItems.value.find((i) => i.id === id));
+        selectedItems.value = selectedItems.value.filter((i) => i.id !== id);
+      }
+    };
+
+    const updateParent = () => {
+      emit("updateAvailableItems", availableItems.value);
+      emit("updateSelectedItems", selectedItems.value);
     };
 
     return {
-      newItems,
+      availableItemsLabel,
+      selectedItemsLabel,
+      availableItems,
+      selectedItems,
       sideToggle,
+      updateParent,
     };
   },
 };
