@@ -35,10 +35,10 @@ export default {
     ]);
 
     const updateAvailableItems = (childItems) => {
-      console.log(childItems, "Parent AvailableItems:", childItems);
+      console.log(childItems, "Console AvailableItems in parent:", childItems);
     };
     const updateSelectedItems = (childItems) => {
-      console.log(childItems, "Parent SelectedItems:", childItems);
+      console.log(childItems, "Console SelectedItems in parent:", childItems);
     };
 
     return {
