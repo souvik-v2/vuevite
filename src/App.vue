@@ -5,12 +5,15 @@
     <Child
       availableItemsLabel="Available"
       selectedItemsLabel="Selected"
+      :availableItems="availableItems"
+      :selectedItems="selectedItems"
       @updateAvailableItems="updateAvailableItems"
       @updateSelectedItems="updateSelectedItems"
     />
   </div>
 </template>
 <script>
+import { ref } from "vue";
 import Child from "./components/ChildItem.vue";
 export default {
   name: "App",
@@ -18,6 +21,19 @@ export default {
     Child,
   },
   setup() {
+
+    var availableItems = ref([
+      { id: 1, name: "Item1" },
+      { id: 2, name: "Item2" },
+      { id: 3, name: "Item3" },
+    ]);
+    var selectedItems = ref([
+      { id: 4, name: "Item4" },
+      { id: 5, name: "Item5" },
+      { id: 6, name: "Item6" },
+      { id: 7, name: "Item7" },
+    ]);
+
     const updateAvailableItems = (childItems) => {
       console.log(childItems, "Parent AvailableItems:", childItems);
     };
@@ -26,6 +42,8 @@ export default {
     };
 
     return {
+      availableItems,
+      selectedItems,
       updateAvailableItems,
       updateSelectedItems,
     };

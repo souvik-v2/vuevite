@@ -35,22 +35,13 @@
 import { ref } from "vue";
 export default {
   name: "Child",
-  props: ["availableItemsLabel", "selectedItemsLabel"],
+  props: ["availableItemsLabel", "selectedItemsLabel", "availableItems", "selectedItems"],
   emits: ["updateAvailableItems", "updateSelectedItems"],
   setup(props, { emit }) {
     var availableItemsLabel = ref(props.availableItemsLabel);
     var selectedItemsLabel = ref(props.selectedItemsLabel);
-    var availableItems = ref([
-      { id: 1, name: "Item1" },
-      { id: 2, name: "Item2" },
-      { id: 3, name: "Item3" },
-    ]);
-    var selectedItems = ref([
-      { id: 4, name: "Item4" },
-      { id: 5, name: "Item5" },
-      { id: 6, name: "Item6" },
-      { id: 7, name: "Item7" },
-    ]);
+    var availableItems = ref(props.availableItems);
+    var selectedItems = ref(props.selectedItems);
 
     const sideToggle = (id, name) => {
       if (name === "available") {
